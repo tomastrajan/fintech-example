@@ -1,0 +1,37 @@
+<div class="wrapper">
+    <nav class="white">
+        <div *ngIf="pending" class="progress">
+            <div class="indeterminate"></div>
+        </div>
+        <div class="nav-wrapper container">
+            <a id="logo-container" [routerLink]="['/dashboard']" class="brand-logo">
+                <span>fintech</span>example
+            </a>
+            <ul class="right hide-on-med-and-down">
+                <li><a [routerLink]="['/dashboard']">Dashboard</a></li>
+                <li><a [routerLink]="['/clients']">Clients</a></li>
+            </ul>
+            <ul id="slide-out-menu" class="side-nav">
+                <li><a [routerLink]="['/dashboard']">Dashboard</a></li>
+                <li><a [routerLink]="['/clients']">Clients</a></li>
+            </ul>
+            <a href="javascript:void(0)" data-activates="slide-out-menu" class="button-collapse">
+                <i class="material-icons">menu</i>
+            </a>
+        </div>
+    </nav>
+    <div class="content {{route}}">
+        <div class="container">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 info-holder">
+                    <p><strong>fintech</strong>example  ©{{year}}</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

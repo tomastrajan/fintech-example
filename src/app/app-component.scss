@@ -1,0 +1,116 @@
+html,
+body {
+  margin:0;
+  padding:0;
+  height:100%;
+
+  background-color: $color-body;
+}
+
+.wrapper {
+  min-height:100%;
+  position:relative;
+}
+
+.content {
+  padding-top: 20px;
+
+  @media #{$small-and-down} {
+    padding-bottom: 300px;
+  }
+  @media #{$medium-and-up} {
+    padding-bottom: 150px;
+  }
+
+}
+
+nav {
+  position: relative;
+
+  height: 64px !important;
+  line-height: 64px !important;;
+
+  .progress {
+    position: absolute;
+    bottom: -5px;
+    height: 5px;
+    margin: 0;
+  }
+
+  #logo-container {
+    color: $primary-color;
+
+    span {
+      color: $primary-color-light;
+      font-weight: bold;
+    }
+  }
+
+
+  .button-collapse {
+    color: $primary-color;
+  }
+
+  .side-nav {
+    li {
+      color: $primary-color;
+
+      &:hover {
+        background-color: $white;
+      }
+    }
+  }
+
+  ul {
+    li {
+      a {
+        text-transform: uppercase;
+        font-weight: bold;
+        color: $primary-color;
+
+        &:hover {
+          background-color: $white;
+        }
+      }
+    }
+  }
+
+  .router-link-active {
+    border-bottom: 5px solid $primary-color;
+    padding-bottom: -5px;
+    z-index: 100;
+
+    &:hover {
+      background-color: $white;
+      border-bottom: 5px solid $primary-color;
+    }
+
+    &#logo-container {
+      border: 0px;
+    }
+  }
+}
+
+footer {
+  position:absolute;
+  bottom:0;
+  width: 100%;
+
+  .row {
+    margin: 0;
+  }
+
+  @media #{$small-and-down} {
+    height: 300px;
+  }
+
+  @media #{$medium-and-up} {
+    height: 150px;
+    .row>div {
+      height: 150px;
+    }
+  }
+
+  background-color: $white;
+
+}

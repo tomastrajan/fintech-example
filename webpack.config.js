@@ -76,10 +76,13 @@ const CONFIG_TARGET = {
         devtool: "source-map",
         output: {
             path: path.join(__dirname, "./dev"),
+            publicPath: "fintech-example",
             filename: "[name].js"
         },
         plugins: [
-            new OpenBrowserWebpackPlugin(),
+            new OpenBrowserWebpackPlugin({
+                url: "http://localhost:8080/fintech-example"
+            }),
             new webpack.DefinePlugin({
                 PROD: "false"
             })
@@ -88,6 +91,7 @@ const CONFIG_TARGET = {
     PROD: {
         output: {
             path: path.join(__dirname, "./prod"),
+            publicPath: "fintech-example",
             filename: "[name].[chunkhash].js"
         },
         plugins: [

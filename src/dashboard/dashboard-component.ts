@@ -17,8 +17,9 @@ export class DashboardComponent implements OnInit {
     constructor(private store: Store<AppState>) {}
 
     public ngOnInit(): any {
-        this.usdeur = this.store.select((s: AppState)
-            => s.underlyings.fx["USD/EUR"]);
+        this.usdeur = this.store.select((s: AppState) => {
+            return s.underlyings.fx["USD/EUR"];
+        });
     }
 
 }

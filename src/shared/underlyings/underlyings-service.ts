@@ -14,7 +14,7 @@ export class UnderlyingsService {
         const MOCK = [
             { ccypair: "USD/CHF", value: 0.9746 },
             { ccypair: "USD/GBP", value: 0.6919 },
-            // { ccypair: "USD/EUR", value: 0.8782 },
+            { ccypair: "USD/EUR", value: 0.8782 },
             // { ccypair: "USD/AUD", value: 1.3642 },
             // { ccypair: "USD/CZK", value: 23.7309 },
             { ccypair: "USD/NOK", value: 8.2081 }

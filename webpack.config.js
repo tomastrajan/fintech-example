@@ -12,8 +12,8 @@ const CompressionWebpackPlugin = require("compression-webpack-plugin");
 const CONFIG_DEFAULT = {
     context: path.join(__dirname, "./src"),
     entry: {
-        vendor: "./vendor.ts",
-        main: "./main.ts"
+        main: "./main.ts",
+        vendor: "./vendor.ts"
     },
     module: {
         loaders: [
@@ -64,8 +64,7 @@ const CONFIG_DEFAULT = {
         new ExtractTextWebpackPlugin("styles.[hash].css"),
         new HtmlWebpackPlugin({
             template: "./index.html",
-            favicon: "./favicon.ico",
-            chunksSortMode: "dependency"
+            favicon: "./favicon.ico"
         })
     ]
 };
@@ -82,6 +81,10 @@ const CONFIG_TARGET = {
         plugins: [
             new OpenBrowserWebpackPlugin({
                 url: "http://localhost:8080/fintech-example"
+            }),
+            new webpack.optimize.CommonsChunkPlugin({
+                name: "vendor",
+                filename: "vendor.js"
             }),
             new webpack.DefinePlugin({
                 PROD: "false"

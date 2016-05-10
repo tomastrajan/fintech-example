@@ -1,13 +1,16 @@
 import {Component, OnInit } from "@angular/core";
 import {ROUTER_DIRECTIVES, Routes, Router} from "@angular/router";
+// import {Devtools} from '@ngrx/devtools';
 
-import { DashboardComponent } from "../dashboard";
-import { ClientsComponent } from "../clients";
+import {UnderlyingsService} from "../shared";
+import {DashboardComponent} from "../dashboard";
+import {ClientsComponent} from "../clients";
 
 @Component({
     selector: "ft-app",
     template: require("./app-component.html"),
-    directives: [ROUTER_DIRECTIVES]
+    directives: [ROUTER_DIRECTIVES/*, Devtools*/],
+    providers: [UnderlyingsService]
 })
 @Routes([
     { path: "/dashboard", component: DashboardComponent },
@@ -17,7 +20,10 @@ export class AppComponent implements OnInit {
 
     private year: number;
 
-    constructor(private router: Router) {}
+    constructor(
+        private router: Router,
+        private underlyingsService: UnderlyingsService
+    ) {}
 
     public ngOnInit(): any {
         this.year = new Date().getFullYear();

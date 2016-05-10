@@ -10,7 +10,7 @@
     "lint": "tslint src/**/*ts",
     "test": "npm run lint",
     "build": "webpack --env.TARGET PROD",
-    "ci": "npm t && npm run build",
+    "ci": "npm run build",
     "prod": "npm run build && node server.js"
   },
   "dependencies": {

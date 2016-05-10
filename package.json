@@ -7,10 +7,10 @@
     "reinstall": "rm -rf node_modules && npm i",
     "postinstall": "typings i",
     "start": "webpack-dev-server --history-api-fallback --env.TARGET DEV",
-    "lint": "tslint src/**/*ts",
+    "lint": "tslint src/**/*.ts",
     "test": "npm run lint",
     "build": "webpack --env.TARGET PROD",
-    "ci": "npm run build",
+    "ci": "npm test && npm run build",
     "prod": "npm run build && node server.js"
   },
   "dependencies": {

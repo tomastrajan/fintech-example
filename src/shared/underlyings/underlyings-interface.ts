@@ -3,7 +3,10 @@ export interface Underlyings {
 }
 
 export interface FxState {
-    [ccypair: string]: FxUnderlying;
+    ccypairs: string[];
+    values: {
+        [ccypair: string]: FxUnderlying;
+    }
 }
 
 export interface FxUnderlying {

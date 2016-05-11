@@ -1,8 +1,11 @@
 import {Reducer, combineReducers} from "@ngrx/store";
 
-import {AppState} from "./app-interface";
 import {underlyingsReducer} from "../shared";
+import {clientReducer} from "../clients";
+
+import {AppState} from "./app-interface";
 
 export const appReducer: Reducer<AppState> = combineReducers({
-    underlyings: underlyingsReducer
+    underlyings: underlyingsReducer,
+    clients: clientReducer
 });

@@ -1,3 +1,11 @@
-<h1>Dashboard</h1>
-
-<ft-ticker [amount]="usdeur | async"></ft-ticker>
+<div class="dashboard">
+    <ft-ticker-fx class="left"
+                  *ngFor="let ticker of tickers"
+                  [fxUnderlying]="ticker | async"
+                  (onRemoved)="onRemoved($event)">
+    </ft-ticker-fx>
+    <a class="btn-floating btn-large waves-effect waves-light left"
+        (click)="addTicker()">
+        <i class="material-icons">add</i>
+    </a>
+</div>

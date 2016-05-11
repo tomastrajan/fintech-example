@@ -1,0 +1,15 @@
+<div class="ticker card">
+    <div class="card-content">
+        <ft-spinner [predicate]="!fxUnderlying"></ft-spinner>
+        <div *ngIf="fxUnderlying">
+            <span class="card-title">
+                {{fxUnderlying.ccypair}}
+            </span>
+            <span (click)="remove()">X</span>
+            <div class="row">
+                <div class="col s6">{{fxUnderlying.bid}}</div>
+                <div class="col s6">{{fxUnderlying.ask}}</div>
+            </div>
+        </div>
+    </div>
+</div>

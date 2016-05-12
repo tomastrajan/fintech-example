@@ -5,7 +5,7 @@ import {
     MOCK_CLIENTS
 } from "./clients-constants";
 
-export const clientReducer: Reducer<Clients> =
+export const clients: Reducer<Clients> =
     (state: Clients = {clients: MOCK_CLIENTS}, action: Action): Clients => {
         switch (action.type) {
 

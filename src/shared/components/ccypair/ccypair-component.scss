@@ -1,0 +1,19 @@
+.ccypair {
+  display: inline-block;
+  float: left;
+  margin: 5px 10px;
+  background-color: $primary-color;
+  color: $white;
+  border-radius: 5%;
+  padding: 0 5px;
+  user-select: none;
+
+  &:hover {
+    @extend .z-depth-1;
+  }
+
+  span {
+    padding: 0 2px;
+    color: $primary-color-light
+  }
+}

@@ -4,15 +4,14 @@ import {Store} from "@ngrx/store";
 
 import {AppState} from "../../app";
 
-import {updateFxUnderlying} from "./underlyings-fx-actions";
+import {updateCcypairValue} from "./underlyings-actions";
+import {CcyPair} from "./underlyings-interface";
 
 const MOCK = [
     { ccypair: "USD/CHF", value: 0.9746 },
     { ccypair: "USD/GBP", value: 0.6919 },
     { ccypair: "USD/EUR", value: 0.8782 },
-    { ccypair: "USD/AUD", value: 1.3642 },
-    { ccypair: "USD/CZK", value: 23.7309 },
-    { ccypair: "USD/NOK", value: 8.2081 }
+    { ccypair: "USD/AUD", value: 1.3642 }
 ];
 
 @Injectable()
@@ -22,16 +21,18 @@ export class UnderlyingsService {
 
     // TODO get data from websocket
     constructor(private store: Store<AppState>) {
-        store.select(s => s.underlyings.fx.ccypairs)
+        store.select(s => s.underlyings.ccypairs)
             .subscribe(ccypairs => {
                 Object.keys(this.subscriptions)
-                    .filter(key => ccypairs.indexOf(key) === -1)
+                    .filter(key => !ccypairs.find((p: CcyPair) => p.value === key))
                     .forEach(unsubKey => {
                         this.subscriptions[unsubKey].unsubscribe();
                         delete this.subscriptions[unsubKey]
                     });
 
-                ccypairs.forEach(ccypair => {
+                ccypairs
+                    .map((p: CcyPair) => p.value)
+                    .forEach(ccypair => {
                     if (!this.subscriptions[ccypair]) {
                         const subscription = this.subscribeFxUnderlying(ccypair);
                         if (subscription) {
@@ -49,7 +50,7 @@ export class UnderlyingsService {
                 (<any>pair).value += (Math.random() - 0.5) / 100;
                 const bid = pair.value.toFixed(4);
                 const ask = (pair.value * 1.02).toFixed(4);
-                this.store.dispatch(updateFxUnderlying(pair.ccypair, bid, ask));
+                this.store.dispatch(updateCcypairValue(pair.ccypair, bid, ask));
             });
         }
         return null;

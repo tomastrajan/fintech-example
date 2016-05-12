@@ -7,7 +7,6 @@ import {
     EventEmitter
 } from "@angular/core";
 
-import {FxUnderlying} from "../../underlyings";
 import {SpinnerComponent} from "../spinner";
 
 @Component({
@@ -18,7 +17,7 @@ import {SpinnerComponent} from "../spinner";
 })
 export class TickerFxComponent implements OnInit {
 
-    @Input() public fxUnderlying: FxUnderlying;
+    @Input() public fxUnderlying: any;
 
     @Output() public onRemoved = new EventEmitter();
 

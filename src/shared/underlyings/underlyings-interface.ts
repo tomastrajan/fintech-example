@@ -1,15 +1,19 @@
 export interface Underlyings {
-    fx: FxState
+    ccypairs: CcyPair[];
+    values: CcyPairValues
 }
 
-export interface FxState {
-    ccypairs: string[];
-    values: {
-        [ccypair: string]: FxUnderlying;
-    }
+export interface CcyPair {
+    value: string;
+    active: boolean;
+    favourite?: boolean;
 }
 
-export interface FxUnderlying {
+export interface CcyPairValues {
+    [ccypair: string]: CcyPairValue;
+}
+
+export interface CcyPairValue {
     ccypair: string;
     bid: string;
     ask: string;

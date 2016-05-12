@@ -35,6 +35,7 @@ const CONFIG_DEFAULT = {
                 loaders: [
                     ExtractTextWebpackPlugin.extract("style"),
                     { loader: "css", query: { modules: false, sourceMap: true } },
+                    { loader: "postcss" },
                     { loader: "resolve-url" },
                     { loader: "sass", query: { sourceMap: true } }
                 ]
@@ -52,6 +53,9 @@ const CONFIG_DEFAULT = {
                 loader: "html"
             }
         ]
+    },
+    postcss: function () {
+        return [require('autoprefixer')];
     },
     resolve: {
         extensions: ["", ".ts", ".js", ".scss"],

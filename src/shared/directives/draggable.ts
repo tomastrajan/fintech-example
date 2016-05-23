@@ -1,70 +1,78 @@
-import {Directive, HostListener, ElementRef, OnInit} from "@angular/core";
-import {Subject} from "rxjs";
+import {Directive, ElementRef, OnInit, Input} from "@angular/core";
+import {Observable} from "rxjs";
 
 @Directive({
-    selector: "[draggable]"
+    selector: "[draggable]",
+    properties: []
 })
 export class Draggable implements OnInit {
-    private mousedrag;
-    private mouseup = new Subject();
-    private mousedown = new Subject();
-    private mousemove = new Subject();
+    private mousedown;
+    private mousemove;
+    private mouseup;
+    private el;
 
-    @HostListener("mouseup", ["$event"])
-    onMouseup(event) {
-        this.mouseup.next(event);
-    }
-
-    @HostListener("mousedown", ["$event"])
-    onMousedown(event) {
-        this.mousedown.next(event);
-    }
-
-    @HostListener("mousemove", ["$event"])
-    onMousemove(event) {
-        this.mousemove.next(event);
-    }
+    @Input() private draggable: string;
+    @Input() private draggableData: any;
+    @Input() private draggableOptions: DraggableOptions;
 
     constructor(public element: ElementRef) {
-        this.element.nativeElement.style.position = "relative";
-        this.element.nativeElement.style.cursor = "pointer";
+        this.el = element.nativeElement;
 
-        // this.mousedrag = this.mousedown.map((event: any) => {
-        //         event.preventDefault();
-        //         return {
-        //             left: event.clientX - this.element.nativeElement.getBoundingClientRect().left,
-        //             top: event.clientY - this.element.nativeElement.getBoundingClientRect().top
-        //         };
-        //     })
-        //     .flatMap(imageOffset => this.mousemove
-        //         .map((pos: any) => ({
-        //             top: pos.clientY - imageOffset.top,
-        //             left: pos.clientX - imageOffset.left
-        //         }))
-        //         .takeUntil(this.mouseup));
-
-        this.mousedrag = this.mousedown.map(() => {
-            console.log("down");
-            return {
-                top: 10,
-                left: 10
-            }
-        })
-
+        this.mousedown = Observable.fromEvent(this.el, "mousedown");
+        this.mousemove = Observable.fromEvent(document, "mousemove");
+        this.mouseup = Observable.fromEvent(document, "mouseup");
     }
-
 
     public ngOnInit() {
-        this.mousedrag.subscribe((pos: any) => {
-            this.element.nativeElement.style.top = pos.top + "px";
-            this.element.nativeElement.style.left = pos.left + "px";
-            console.log(this.element.nativeElement.style.top, this.element.nativeElement.style.left);
-        });
+        this.mousedown
+            .map(({clientX, clientY}: any) => {
+                event.preventDefault();
+                this.el.classList.add("dragged");
+                let {left, top} = this.el.style;
+                return {
+                    left: clientX,
+                    top: clientY,
+                    offsetLeft: Draggable.offsetToNumber(left),
+                    offsetTop: Draggable.offsetToNumber(top)
+                };
+            })
+            .flatMap((source: any) => this.mousemove
+                .map(({clientX, clientY}: any) => {
+                    return {
+                        left: clientX - source.left + source.offsetLeft,
+                        top: clientY - source.top + source.offsetTop
+                    }
+                })
+                .takeUntil(this.mouseup.do(() => {
+                    this.el.classList.remove("dragged");
+
+                    if (this.draggableOptions.resetPosition) {
+                        this.resetPosition();
+                    }
+                }))
+            )
+            .catch(err => {
+                console.log(err);
+            })
+            .subscribe(({top, left}: any) => {
+                this.el.style.left = left + "px";
+                this.el.style.top = top + "px";
+            })
+
     }
 
-    private getElement() {
-        return this.element.nativeElement.children[0];
+    private resetPosition() {
+        this.el.style.top = "";
+        this.el.style.left = "";
     }
 
+    static offsetToNumber(offset) {
+        const value = offset.replace("px", "");
+        return value === "" ? 0 : parseInt(value, 10);
+    }
 
+}
+
+export interface DraggableOptions {
+    resetPosition?: boolean;
 }

@@ -1,0 +1,13 @@
+[draggable] {
+  position: relative;
+  cursor: pointer;
+
+
+  &.dragged {
+
+    >* {
+      @extend .z-depth-2;
+      opacity: 0.5;
+    }
+  }
+}

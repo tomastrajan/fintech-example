@@ -3,9 +3,7 @@
         <div class="col s12">
             <ft-ccypair *ngFor="let ccypair of ccypairs | async"
                         [ccypair]="ccypair"
-                        ftDraggable="ccypair"
-                        [ftDraggableData]="ccypair"
-                        [ftDraggableOptions]="{ resetPosition: true }">
+                        [ftDraggable]="{ type: 'ccypair', data: ccypair }">
             </ft-ccypair>
         </div>
 

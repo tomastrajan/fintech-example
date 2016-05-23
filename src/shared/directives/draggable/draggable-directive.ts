@@ -11,12 +11,11 @@ export class DraggableDirective implements OnInit {
     private mousemove;
     private mouseup;
 
-    @Input() private ftDraggable: string;
-    @Input() private ftDraggableData: any;
-    @Input() private ftDraggableOptions: DraggableOptions;
+    @Input() private ftDraggable: DraggableOptions;
 
     constructor(public element: ElementRef) {
         this.el = element.nativeElement;
+        this.el.classList.add("draggable");
 
         this.mousedown = Observable.fromEvent(this.el, "mousedown");
         this.mousemove = Observable.fromEvent(document, "mousemove");
@@ -24,7 +23,10 @@ export class DraggableDirective implements OnInit {
     }
 
     public ngOnInit() {
-        console.log(this.ftDraggable);
+        let { type, data, resetPosition } = this.ftDraggable;
+        type = type || "any";
+        resetPosition = resetPosition === undefined ? true : resetPosition;
+
         this.mousedown
             .map(({clientX, clientY}: any) => {
                 event.preventDefault();
@@ -47,7 +49,7 @@ export class DraggableDirective implements OnInit {
                 .takeUntil(this.mouseup.do(() => {
                     this.el.classList.remove("dragged");
 
-                    if (this.ftDraggableOptions.resetPosition) {
+                    if (resetPosition) {
                         this.resetPosition();
                     }
                 }))
@@ -75,5 +77,7 @@ export class DraggableDirective implements OnInit {
 }
 
 export interface DraggableOptions {
+    type?: string;
+    data?: any;
     resetPosition?: boolean;
 }

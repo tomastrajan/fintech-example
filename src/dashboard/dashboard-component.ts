@@ -1,16 +1,19 @@
 import {Observable} from "rxjs";
 import {Component, OnInit} from "@angular/core";
 import {Store} from "@ngrx/store";
-import {TickerFxComponent} from "../shared";
+
 import {AppState} from "../app";
-import {CcyPair} from "../shared/underlyings/underlyings-interface";
-import {CcyPairComponent} from "../shared/components/ccypair/ccypair-component";
-import {Draggable} from "../shared/directives/draggable";
+import {
+    TickerFxComponent,
+    CcyPair,
+    CcyPairComponent,
+    DraggableDirective
+} from "../shared";
 
 @Component({
     selector: "ft-dashboard",
     template: require("./dashboard-component.html"),
-    directives: [Draggable, TickerFxComponent, CcyPairComponent]
+    directives: [DraggableDirective, TickerFxComponent, CcyPairComponent]
 })
 export class DashboardComponent implements OnInit {
 

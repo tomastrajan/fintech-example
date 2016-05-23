@@ -2,18 +2,18 @@ import {Directive, ElementRef, OnInit, Input} from "@angular/core";
 import {Observable} from "rxjs";
 
 @Directive({
-    selector: "[draggable]",
+    selector: "[ftDraggable]",
     properties: []
 })
-export class Draggable implements OnInit {
+export class DraggableDirective implements OnInit {
+    private el: HTMLElement;
     private mousedown;
     private mousemove;
     private mouseup;
-    private el;
 
-    @Input() private draggable: string;
-    @Input() private draggableData: any;
-    @Input() private draggableOptions: DraggableOptions;
+    @Input() private ftDraggable: string;
+    @Input() private ftDraggableData: any;
+    @Input() private ftDraggableOptions: DraggableOptions;
 
     constructor(public element: ElementRef) {
         this.el = element.nativeElement;
@@ -24,6 +24,7 @@ export class Draggable implements OnInit {
     }
 
     public ngOnInit() {
+        console.log(this.ftDraggable);
         this.mousedown
             .map(({clientX, clientY}: any) => {
                 event.preventDefault();
@@ -32,8 +33,8 @@ export class Draggable implements OnInit {
                 return {
                     left: clientX,
                     top: clientY,
-                    offsetLeft: Draggable.offsetToNumber(left),
-                    offsetTop: Draggable.offsetToNumber(top)
+                    offsetLeft: DraggableDirective.offsetToNumber(left),
+                    offsetTop: DraggableDirective.offsetToNumber(top)
                 };
             })
             .flatMap((source: any) => this.mousemove
@@ -46,7 +47,7 @@ export class Draggable implements OnInit {
                 .takeUntil(this.mouseup.do(() => {
                     this.el.classList.remove("dragged");
 
-                    if (this.draggableOptions.resetPosition) {
+                    if (this.ftDraggableOptions.resetPosition) {
                         this.resetPosition();
                     }
                 }))

@@ -1,11 +1,11 @@
-import {Reducer, Action, combineReducers} from "@ngrx/store";
-import {Underlyings, CcyPair, CcyPairValues} from "./underlyings-interface";
+import { Reducer, Action, combineReducers } from "@ngrx/store";
+import { Underlyings, CcyPair, CcyPairValues } from "./underlyings-interface";
 
-export const UNDERLYING_CCYPAIR_SET_ACTIVE = "UNDERLYING_CCYPAIR_SET_ACTIVE";
-export const UNDERLYING_CCYPAIR_SET_FAVOURITE = "UNDERLYING_CCYPAIR_SET_FAVOURITE";
-export const UNDERLYING_CCYPAIR_VALUE_UPDATE = "UNDERLYING_CCYPAIR_VALUE_UPDATE";
+export const UNDERLYING_CCYPAIR_SET_ACTIVE: string = "UNDERLYING_CCYPAIR_SET_ACTIVE";
+export const UNDERLYING_CCYPAIR_SET_FAVOURITE: string = "UNDERLYING_CCYPAIR_SET_FAVOURITE";
+export const UNDERLYING_CCYPAIR_VALUE_UPDATE: string = "UNDERLYING_CCYPAIR_VALUE_UPDATE";
 
-const initialCcypairs = [
+const initialCcypairs: any = [
     { value: "USD/EUR", active: false },
     { value: "USD/GBP", active: false },
     { value: "USD/CHF", active: false },
@@ -53,5 +53,3 @@ export const values: Reducer<CcyPairValues> =
 export const underlyings: Reducer<Underlyings> = combineReducers({
     ccypairs, values
 });
-
-

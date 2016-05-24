@@ -4,13 +4,14 @@ import {bootstrap} from "@angular/platform-browser-dynamic";
 import {enableProdMode, provide} from "@angular/core";
 import {HTTP_PROVIDERS} from "@angular/http";
 import {ROUTER_PROVIDERS} from "@angular/router";
-import {LocationStrategy, HashLocationStrategy } from '@angular/common';
+import {LocationStrategy, HashLocationStrategy } from "@angular/common";
 import {provideStore} from "@ngrx/store";
 // import {instrumentStore} from '@ngrx/devtools';
 
 import {AppComponent, appReducer} from "./app";
 
-declare const PROD;
+declare const require: any;
+declare const PROD: boolean;
 if (PROD) { enableProdMode(); }
 
 bootstrap(AppComponent, [

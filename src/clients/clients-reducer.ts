@@ -1,12 +1,14 @@
-import {Reducer, Action} from "@ngrx/store";
-import {Clients, Client} from "./clients-interface";
+import { Reducer, Action } from "@ngrx/store";
+import { Clients, Client } from "./clients-interface";
 import {
-    CLIENT_ADD, CLIENT_REMOVE, CLIENT_UPDATE,
+    CLIENT_ADD,
+    CLIENT_REMOVE,
+    CLIENT_UPDATE,
     MOCK_CLIENTS
 } from "./clients-constants";
 
 export const clients: Reducer<Clients> =
-    (state: Clients = {clients: MOCK_CLIENTS}, action: Action): Clients => {
+    (state: Clients = { clients: MOCK_CLIENTS }, action: Action): Clients => {
         switch (action.type) {
 
             case CLIENT_ADD:

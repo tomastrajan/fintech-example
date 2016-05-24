@@ -4,4 +4,5 @@ import { Component } from "@angular/core";
     selector: "ft-clients",
     template: require("./clients-component.html")
 })
-export class ClientsComponent {}
+export class ClientsComponent {
+}

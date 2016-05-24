@@ -1,15 +1,13 @@
-import {Observable, Subscriber} from "rxjs";
-import {Component, OnInit} from "@angular/core";
-import {Store} from "@ngrx/store";
-
-import {AppState} from "../app";
+import { Observable, Subscriber } from "rxjs";
+import { Component, OnInit } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { AppState } from "../app";
 import {
     TickerFxComponent,
     CcyPair,
     CcyPairComponent,
     DroppableDirective,
-    DraggableDirective,
-    DraggableService
+    DraggableDirective
 } from "../shared";
 
 @Component({
@@ -21,11 +19,9 @@ export class DashboardComponent implements OnInit {
 
     private ccypairs: Observable<CcyPair[]>;
     private subscriber: Subscriber<any>;
-    
-    
-    constructor(
-        private store: Store<AppState>
-    ) {
+
+
+    constructor(private store: Store<AppState>) {
         this.ccypairs = this.store
             .select((s: AppState) => s.underlyings.ccypairs);
 

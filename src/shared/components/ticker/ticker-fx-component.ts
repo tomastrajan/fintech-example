@@ -1,13 +1,5 @@
-import {
-    Component,
-    ChangeDetectionStrategy,
-    OnInit,
-    Input,
-    Output,
-    EventEmitter
-} from "@angular/core";
-
-import {SpinnerComponent} from "../spinner";
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from "@angular/core";
+import { SpinnerComponent } from "../spinner";
 
 @Component({
     selector: "ft-ticker-fx",
@@ -15,19 +7,14 @@ import {SpinnerComponent} from "../spinner";
     directives: [SpinnerComponent],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TickerFxComponent implements OnInit {
+export class TickerFxComponent {
 
     @Input() public fxUnderlying: any;
 
-    @Output() public onRemoved = new EventEmitter();
+    @Output() public onRemoved: EventEmitter<any> = new EventEmitter();
 
-    constructor() {}
-
-    public ngOnInit(): any {}
-    
-    public remove() {
+    public remove(): void {
         this.onRemoved.emit(this.fxUnderlying.ccypair);
     }
-    
 
 }

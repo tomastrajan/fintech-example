@@ -6,7 +6,13 @@
                         [ftDraggable]="{ type: 'ccypair', data: ccypair }">
             </ft-ccypair>
         </div>
+    </div>
+    <div class="row">
+        <div class="col s12"
+             style="border: 1px solid #333; padding: 20px;"
+             [ftDroppable]="{ types: ['ccypair'], subscriber: subscriber }">
 
+        </div>
     </div>
     <!--<ft-ticker-fx class="left"-->
                   <!--*ngFor="let ticker of tickers"-->

@@ -2,7 +2,7 @@ import {Component, OnInit } from "@angular/core";
 import {ROUTER_DIRECTIVES, Routes, Router} from "@angular/router";
 // import {Devtools} from '@ngrx/devtools';
 
-import {UnderlyingsService} from "../shared";
+import {UnderlyingsService, DraggableService} from "../shared";
 import {DashboardComponent} from "../dashboard";
 import {ClientsComponent} from "../clients";
 
@@ -10,7 +10,7 @@ import {ClientsComponent} from "../clients";
     selector: "ft-app",
     template: require("./app-component.html"),
     directives: [ROUTER_DIRECTIVES/*, Devtools*/],
-    providers: [UnderlyingsService]
+    providers: [DraggableService, UnderlyingsService]
 })
 @Routes([
     { path: "/dashboard", component: DashboardComponent },
@@ -22,7 +22,8 @@ export class AppComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private underlyingsService: UnderlyingsService
+        private underlyingsService: UnderlyingsService,
+        private draggableService: DraggableService
     ) {}
 
     public ngOnInit(): any {

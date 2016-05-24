@@ -1,8 +1,11 @@
 .draggable {
   position: relative;
   cursor: pointer;
+  user-select: none;
 
   &.dragged {
+    pointer-events: none;
+    cursor: pointer;
 
     >* {
       @extend .z-depth-2;

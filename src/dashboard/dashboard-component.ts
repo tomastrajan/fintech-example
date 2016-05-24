@@ -1,4 +1,4 @@
-import {Observable} from "rxjs";
+import {Observable, Subscriber} from "rxjs";
 import {Component, OnInit} from "@angular/core";
 import {Store} from "@ngrx/store";
 
@@ -7,21 +7,29 @@ import {
     TickerFxComponent,
     CcyPair,
     CcyPairComponent,
-    DraggableDirective
+    DroppableDirective,
+    DraggableDirective,
+    DraggableService
 } from "../shared";
 
 @Component({
     selector: "ft-dashboard",
     template: require("./dashboard-component.html"),
-    directives: [DraggableDirective, TickerFxComponent, CcyPairComponent]
+    directives: [DraggableDirective, DroppableDirective, TickerFxComponent, CcyPairComponent]
 })
 export class DashboardComponent implements OnInit {
 
     private ccypairs: Observable<CcyPair[]>;
-
-    constructor(private store: Store<AppState>) {
+    private subscriber: Subscriber<any>;
+    
+    
+    constructor(
+        private store: Store<AppState>
+    ) {
         this.ccypairs = this.store
             .select((s: AppState) => s.underlyings.ccypairs);
+
+        this.subscriber = Subscriber.create((val: any) => console.log(val));
     }
 
     public ngOnInit(): any {

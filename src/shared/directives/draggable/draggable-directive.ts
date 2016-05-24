@@ -1,9 +1,9 @@
 import {Directive, ElementRef, OnInit, Input} from "@angular/core";
 import {Observable} from "rxjs";
+import {DraggableService} from "./draggable-service";
 
 @Directive({
-    selector: "[ftDraggable]",
-    properties: []
+    selector: "[ftDraggable]"
 })
 export class DraggableDirective implements OnInit {
     private el: HTMLElement;
@@ -11,9 +11,12 @@ export class DraggableDirective implements OnInit {
     private mousemove;
     private mouseup;
 
-    @Input() private ftDraggable: DraggableOptions;
+    @Input("ftDraggable") private options: DraggableOptions;
 
-    constructor(public element: ElementRef) {
+    constructor(
+        private element: ElementRef, 
+        private service: DraggableService
+    ) {
         this.el = element.nativeElement;
         this.el.classList.add("draggable");
 
@@ -23,13 +26,12 @@ export class DraggableDirective implements OnInit {
     }
 
     public ngOnInit() {
-        let { type, data, resetPosition } = this.ftDraggable;
+        let {type, data, resetPosition} = this.options;
         type = type || "any";
         resetPosition = resetPosition === undefined ? true : resetPosition;
 
         this.mousedown
             .map(({clientX, clientY}: any) => {
-                event.preventDefault();
                 this.el.classList.add("dragged");
                 let {left, top} = this.el.style;
                 return {
@@ -48,7 +50,7 @@ export class DraggableDirective implements OnInit {
                 })
                 .takeUntil(this.mouseup.do(() => {
                     this.el.classList.remove("dragged");
-
+                    this.service.dropped.next({ type, data });
                     if (resetPosition) {
                         this.resetPosition();
                     }

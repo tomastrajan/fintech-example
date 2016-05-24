@@ -1,10 +1,5 @@
-import {
-    Component,
-    ChangeDetectionStrategy,
-    Input,
-    OnChanges
-} from "@angular/core";
-import {CcyPair} from "../../underlyings/underlyings-interface";
+import { Component, ChangeDetectionStrategy, Input, OnChanges } from "@angular/core";
+import { CcyPair } from "../../underlyings/underlyings-interface";
 
 @Component({
     selector: "ft-ccypair",
@@ -15,14 +10,15 @@ import {CcyPair} from "../../underlyings/underlyings-interface";
 })
 export class CcyPairComponent implements OnChanges {
 
-    @Input() private ccypair: CcyPair;
-    
+    @Input()
+    private ccypair: CcyPair;
+
     private ccy1: string;
     private ccy2: string;
 
-    ngOnChanges(changes: {}): any {
+    public ngOnChanges(changes: {}): any {
         if (this.ccypair) {
-            [this.ccy1, this.ccy2] = this.ccypair.value.split("/"); 
+            [this.ccy1, this.ccy2] = this.ccypair.value.split("/");
         }
     }
 

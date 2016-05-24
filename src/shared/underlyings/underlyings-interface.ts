@@ -1,6 +1,6 @@
 export interface Underlyings {
     ccypairs: CcyPair[];
-    values: CcyPairValues
+    values: CcyPairValues;
 }
 
 export interface CcyPair {

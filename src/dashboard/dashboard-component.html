@@ -8,19 +8,13 @@
         </div>
     </div>
     <div class="row">
-        <div class="col s12"
-             style="border: 1px solid #333; padding: 20px;"
-             [ftDroppable]="{ types: ['ccypair'], subscriber: subscriber }">
-
+        <div class="col s12 tickers"
+             [ftDroppable]="{ types: ['ccypair'], onDropped: onCcypairDropped }">
+            <ft-ticker-fx class="left"
+                          *ngFor="let ticker of tickers | async"
+                          [fxUnderlying]="ticker"
+                          (onRemoved)="onRemoved($event)">
+            </ft-ticker-fx>
         </div>
     </div>
-    <!--<ft-ticker-fx class="left"-->
-                  <!--*ngFor="let ticker of tickers"-->
-                  <!--[fxUnderlying]="ticker | async"-->
-                  <!--(onRemoved)="onRemoved($event)">-->
-    <!--</ft-ticker-fx>-->
-    <!--<a class="btn-floating btn-large waves-effect waves-light left"-->
-        <!--(click)="addTicker()">-->
-        <!--<i class="material-icons">add</i>-->
-    <!--</a>-->
 </div>

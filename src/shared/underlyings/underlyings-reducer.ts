@@ -42,7 +42,9 @@ export const values: Reducer<CcyPairValues> =
         switch (action.type) {
 
             case UNDERLYING_CCYPAIR_VALUE_UPDATE:
-                return Object.assign({}, state, action.payload);
+                return Object.assign({}, state, {
+                    [action.payload.ccypair]: action.payload
+                });
 
             default:
                 return state;

@@ -1,0 +1,7 @@
+.droppable {
+
+  &.hovered {
+    @extend .z-depth-1;
+  }
+
+}

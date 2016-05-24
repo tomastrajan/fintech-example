@@ -1,13 +1,15 @@
 import { Observable, Subscriber } from "rxjs";
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app";
 import {
     TickerFxComponent,
     CcyPair,
+    CcyPairValues,
     CcyPairComponent,
     DroppableDirective,
-    DraggableDirective
+    DraggableDirective,
+    setCcypairActive
 } from "../shared";
 
 @Component({
@@ -15,37 +17,38 @@ import {
     template: require("./dashboard-component.html"),
     directives: [DraggableDirective, DroppableDirective, TickerFxComponent, CcyPairComponent]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
 
     private ccypairs: Observable<CcyPair[]>;
-    private subscriber: Subscriber<any>;
-
+    private tickers: Observable<any>;
+    private onCcypairDropped: Subscriber<any>;
 
     constructor(private store: Store<AppState>) {
         this.ccypairs = this.store
-            .select((s: AppState) => s.underlyings.ccypairs);
+            .select((s: AppState) => s.underlyings.ccypairs)
+            .map((ccypairs: CcyPair[]) => ccypairs.filter((c: CcyPair) => !c.active));
 
-        this.subscriber = Subscriber.create((val: any) => console.log(val));
+        this.tickers = this.store
+            .select((s: AppState) => s.underlyings.values)
+            .flatMap((v: CcyPairValues) => {
+                return this.store
+                    .select((s: AppState) => s.underlyings.ccypairs)
+                    .map((ccypairs: CcyPair[]) => {
+                        return ccypairs
+                            .filter((c: CcyPair) => c.active)
+                            .map((c: CcyPair) => v[c.value]);
+                    });
+            });
+
+        this.tickers.subscribe((val: any) => console.log(val));
+
+        this.onCcypairDropped = Subscriber.create((val: any) => {
+            this.store.dispatch(setCcypairActive(val.value, true));
+        });
     }
 
-    public ngOnInit(): any {
-        console.log("ok");
+    private onRemoved(cypair: string): void {
+        this.store.dispatch(setCcypairActive(cypair, false));
     }
-
-    // public buildTickers(ccypairs: string[]): void {
-    //     this.tickers = ccypairs.map((ccypair: string) => {
-    //         return this.store.select((s: AppState) => {
-    //             return s.underlyings.fx.values[ccypair];
-    //         });
-    //     });
-    // }
-    //
-    // public addTicker(): void {
-    //     this.store.dispatch(addFxCcypair("USD/EUR"));
-    // }
-    //
-    // public onRemoved(ccypair: string): void {
-    //     this.store.dispatch(removeFxCcypair(ccypair));
-    // }
 
 }

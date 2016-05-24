@@ -4,6 +4,7 @@
   user-select: none;
 
   &.dragged {
+    z-index: $z-index-max;
     pointer-events: none;
     cursor: pointer;
 

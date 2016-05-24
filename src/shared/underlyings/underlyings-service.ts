@@ -29,6 +29,7 @@ export class UnderlyingsService {
                     });
 
                 ccypairs
+                    .filter((p: CcyPair) => p.active)
                     .map((p: CcyPair) => p.value)
                     .forEach((ccypair: string) => {
                         if (!this.subscriptions[ccypair]) {

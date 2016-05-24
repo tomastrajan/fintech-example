@@ -18,19 +18,26 @@ export class DroppableDirective implements OnInit, OnDestroy {
     constructor(private element: ElementRef,
                 private service: DraggableService) {
         this.el = element.nativeElement;
+        this.el.classList.add("droppable");
+
         this.mouseenter = Observable.fromEvent(this.el, "mouseenter");
         this.mouseleave = Observable.fromEvent(this.el, "mouseleave");
     }
 
     public ngOnInit(): void {
-        this.subs.push(this.mouseenter.subscribe(() => this.hovered = true));
-        this.subs.push(this.mouseleave.subscribe(() => this.hovered = false));
+        this.subs.push(this.mouseenter.subscribe(() => {
+            this.hovered = true;
+            this.el.classList.add("hovered");
+        }));
+        this.subs.push(this.mouseleave.subscribe(() => {
+            this.hovered = false;
+            this.el.classList.remove("hovered");
+        }));
         this.subs.push(this.service.dropped
-            .do(() => console.log(this.hovered))
             .filter(() => this.hovered)
             .filter(({ type }: any) => this.options.types.indexOf(type) > -1)
             .map(({ data }: any) => data)
-            .subscribe(this.options.subscriber));
+            .subscribe(this.options.onDropped));
     }
 
     public ngOnDestroy(): void {
@@ -43,5 +50,5 @@ export class DroppableDirective implements OnInit, OnDestroy {
 
 export interface DroppableOptions {
     types: string[];
-    subscriber: Subscriber<any>;
+    onDropped: Subscriber<any>;
 }

@@ -7,11 +7,13 @@ import { DraggableService } from "./draggable-service";
 })
 export class DraggableDirective implements OnInit {
     private el: HTMLElement;
-    private mousedown: Observable<any>;
-    private mousemove: Observable<any>;
-    private mouseup: Observable<any>;
 
-    @Input("ftDraggable") private options: DraggableOptions;
+    private dragStart: Observable<any>;
+    private dragMove: Observable<any>;
+    private dragEnd: Observable<any>;
+
+    @Input("ftDraggable")
+    private options: DraggableOptions;
 
     public static offsetToNumber(offsetValue: string): number {
         const value: string = offsetValue.replace("px", "");
@@ -23,9 +25,22 @@ export class DraggableDirective implements OnInit {
         this.el = element.nativeElement;
         this.el.classList.add("draggable");
 
-        this.mousedown = Observable.fromEvent(this.el, "mousedown");
-        this.mousemove = Observable.fromEvent(document, "mousemove");
-        this.mouseup = Observable.fromEvent(document, "mouseup");
+        this.dragStart = Observable.merge(
+            Observable.fromEvent(this.el, "mousedown"),
+            Observable.fromEvent(this.el, "touchstart")
+        );
+
+        this.dragMove = Observable.merge(
+            Observable.fromEvent(document, "mousemove"),
+            Observable.fromEvent(document, "touchmove")
+        );
+
+        this.dragEnd = Observable.merge(
+            Observable.fromEvent(document, "mouseup"),
+            Observable.fromEvent(document, "touchend"),
+            Observable.fromEvent(document, "touchcancel")
+        );
+
     }
 
     public ngOnInit(): void {
@@ -33,7 +48,7 @@ export class DraggableDirective implements OnInit {
         type = type || "any";
         resetPosition = resetPosition === undefined ? true : resetPosition;
 
-        this.mousedown
+        this.dragStart
             .map(({ clientX, clientY }: any) => {
                 this.el.classList.add("dragged");
                 let { left, top }: any = this.el.style;
@@ -44,14 +59,14 @@ export class DraggableDirective implements OnInit {
                     offsetTop: DraggableDirective.offsetToNumber(top)
                 };
             })
-            .flatMap((source: any) => this.mousemove
+            .flatMap((source: any) => this.dragMove
                 .map(({ clientX, clientY }: any) => {
                     return {
                         left: clientX - source.left + source.offsetLeft,
                         top: clientY - source.top + source.offsetTop
                     };
                 })
-                .takeUntil(this.mouseup.do(() => {
+                .takeUntil(this.dragEnd.do(() => {
                     this.el.classList.remove("dragged");
                     this.service.dropped.next({ type, data });
                     if (resetPosition) {

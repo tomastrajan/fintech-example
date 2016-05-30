@@ -6,7 +6,7 @@
   "scripts": {
     "reinstall": "rm -rf node_modules && npm i",
     "postinstall": "typings i",
-    "start": "webpack-dev-server --history-api-fallback --env.TARGET DEV",
+    "start": "webpack-dev-server --host 0.0.0.0 --history-api-fallback --env.TARGET DEV",
     "lint": "tslint src/**/*.ts",
     "test": "npm run lint",
     "build": "webpack --env.TARGET PROD",

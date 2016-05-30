@@ -30,6 +30,7 @@ export class DroppableDirective implements OnInit {
             .filter(() => this.hover)
             .filter(({ type }: any) => this.options.types.indexOf(type) > -1)
             .map(({ data }: any) => data)
+            .do(() => this.el.classList.remove("hovered"))
             .subscribe(this.options.onDropped);
     }
 

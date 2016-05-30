@@ -102,18 +102,21 @@ const CONFIG_TARGET = {
             filename: "[name].[chunkhash].js"
         },
         plugins: [
-            new CleanWebpackPlugin(["prod"]),
-            new webpack.optimize.DedupePlugin(),
+            new CompressionWebpackPlugin({
+                asset: "[path][file].gz[query]",
+            }),
+            new webpack.optimize.UglifyJsPlugin({
+                mangle: true
+            }),
             new webpack.optimize.CommonsChunkPlugin({
                 name: "vendor",
                 filename: "vendor.[chunkhash].js"
             }),
+            new webpack.optimize.DedupePlugin(),
             new webpack.DefinePlugin({
                 PROD: "true"
             }),
-            new webpack.optimize.UglifyJsPlugin({
-                mangle: true
-            })
+            new CleanWebpackPlugin(["prod"])
         ]
     }
 };

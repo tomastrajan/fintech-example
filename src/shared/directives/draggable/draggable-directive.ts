@@ -49,9 +49,12 @@ export class DraggableDirective implements OnInit {
         resetPosition = resetPosition === undefined ? true : resetPosition;
 
         this.dragStart
-            .map(({ clientX, clientY }: any) => {
+            .map((e: any) => {
+                e.preventDefault();
                 this.el.classList.add("dragged");
                 let { left, top }: any = this.el.style;
+                let clientX: number = e.clientX || e.touches[0].clientX;
+                let clientY: number = e.clientY || e.touches[0].clientY;
                 return {
                     left: clientX,
                     top: clientY,
@@ -60,13 +63,16 @@ export class DraggableDirective implements OnInit {
                 };
             })
             .flatMap((source: any) => this.dragMove
-                .map(({ clientX, clientY }: any) => {
+                .map((e: any) => {
+                    let clientX: number = e.clientX || e.touches[0].clientX;
+                    let clientY: number = e.clientY || e.touches[0].clientY;
+                    this.service.dragged.next({ clientX, clientY});
                     return {
                         left: clientX - source.left + source.offsetLeft,
                         top: clientY - source.top + source.offsetTop
                     };
                 })
-                .takeUntil(this.dragEnd.do(() => {
+                .takeUntil(this.dragEnd.do((e: any) => {
                     this.el.classList.remove("dragged");
                     this.service.dropped.next({ type, data });
                     if (resetPosition) {

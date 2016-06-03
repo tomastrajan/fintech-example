@@ -12,7 +12,12 @@ const CompressionWebpackPlugin = require("compression-webpack-plugin");
 const CONFIG_DEFAULT = {
     context: path.join(__dirname, "./src"),
     entry: {
-        vendor: ["core-js", "zone.js/dist/zone", "reflect-metadata", "rxjs"],
+        vendor: [
+            "core-js", "zone.js/dist/zone", "reflect-metadata", "rxjs",
+            "@angular/core", "@angular/common", "@angular/http", "@angular/router",
+            "@angular/platform-browser-dynamic"
+        ],
+        styles: ["./main.scss"],
         main: "./main.ts"
     },
     module: {
@@ -65,10 +70,11 @@ const CONFIG_DEFAULT = {
         ]
     },
     plugins: [
-        new ExtractTextWebpackPlugin("styles.[hash].css"),
+        new ExtractTextWebpackPlugin("styles.[hash].css", { allChunks: true }),
         new HtmlWebpackPlugin({
             template: "./index.html",
-            favicon: "./favicon.ico"
+            favicon: "./favicon.ico",
+            excludeChunks: ["styles"]
         })
     ]
 };

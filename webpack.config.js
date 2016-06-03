@@ -54,6 +54,9 @@ const CONFIG_DEFAULT = {
     postcss: function () {
         return [autoprefixer];
     },
+    sassLoader: {
+        includePaths: ["./node_modules/materialize-css/sass"]
+    },
     resolve: {
         extensions: ["", ".ts", ".js", ".scss"],
         modules: [
@@ -75,7 +78,7 @@ const CONFIG_TARGET = {
         devtool: "source-map",
         output: {
             path: path.join(__dirname, "./dev"),
-            publicPath: "fintech-example",
+            publicPath: "",
             filename: "[name].js"
         },
         module: {
@@ -88,7 +91,7 @@ const CONFIG_TARGET = {
         plugins: [
             new ExtractTextWebpackPlugin("styles.css", { allChunks: true }),
             new OpenBrowserWebpackPlugin({
-                url: "http://localhost:8080/fintech-example"
+                url: "http://localhost:8080/"
             }),
             new webpack.optimize.CommonsChunkPlugin({
                 name: "vendor",
@@ -102,7 +105,7 @@ const CONFIG_TARGET = {
     PROD: {
         output: {
             path: path.join(__dirname, "./prod"),
-            publicPath: "fintech-example",
+            publicPath: "",
             filename: "[name].[chunkhash].js"
         },
         module: {

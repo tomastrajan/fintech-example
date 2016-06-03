@@ -11,7 +11,7 @@
     "test": "npm run lint",
     "build": "webpack --env.TARGET PROD",
     "ci": "npm test && npm run build",
-    "prod": "npm run build && node server.js"
+    "prod": "npm run ci && node server.js"
   },
   "dependencies": {
     "@angular/common": "2.0.0-rc.1",

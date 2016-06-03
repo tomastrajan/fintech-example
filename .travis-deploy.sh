@@ -8,6 +8,7 @@ git config user.email "tomas.trajan@gmail.com"
 
 # The first and only commit to this new Git repo contains all the
 # files present with the commit message "Deploy to GitHub Pages".
+touch .nojekyll
 git add .
 git commit -m "Deploy to GitHub Pages"
 

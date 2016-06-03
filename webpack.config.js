@@ -12,8 +12,8 @@ const CompressionWebpackPlugin = require("compression-webpack-plugin");
 const CONFIG_DEFAULT = {
     context: path.join(__dirname, "./src"),
     entry: {
-        main: "./main.ts",
-        vendor: "./vendor.ts"
+        vendor: ["core-js", "zone.js/dist/zone", "reflect-metadata", "rxjs"],
+        main: "./main.ts"
     },
     module: {
         loaders: [

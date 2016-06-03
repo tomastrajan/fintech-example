@@ -1,5 +1,6 @@
-const path = require("path");
 const _ = require("lodash");
+const path = require("path");
+const autoprefixer = require("autoprefixer");
 
 const webpack = require("webpack");
 
@@ -36,15 +37,6 @@ const CONFIG_DEFAULT = {
                 test: /\.json/,
                 loader: "json"
             }, {
-                test: /\.scss/,
-                loaders: [
-                    ExtractTextWebpackPlugin.extract("style"),
-                    { loader: "css", query: { modules: false, sourceMap: true } },
-                    { loader: "postcss" },
-                    { loader: "resolve-url" },
-                    { loader: "sass", query: { sourceMap: true } }
-                ]
-            }, {
                 test: /\.(jpg|eot|ttf|woff|woff2|svg)/,
                 loader: "file",
                 query: {
@@ -60,7 +52,7 @@ const CONFIG_DEFAULT = {
         ]
     },
     postcss: function () {
-        return [require('autoprefixer')];
+        return [autoprefixer];
     },
     resolve: {
         extensions: ["", ".ts", ".js", ".scss"],
@@ -70,11 +62,9 @@ const CONFIG_DEFAULT = {
         ]
     },
     plugins: [
-        new ExtractTextWebpackPlugin("styles.[hash].css", { allChunks: true }),
         new HtmlWebpackPlugin({
             template: "./index.html",
-            favicon: "./favicon.ico",
-            excludeChunks: ["styles"]
+            favicon: "./favicon.ico"
         })
     ]
 };
@@ -88,7 +78,15 @@ const CONFIG_TARGET = {
             publicPath: "fintech-example",
             filename: "[name].js"
         },
+        module: {
+            loaders: [{
+                test: /\.scss/,
+                loader: ExtractTextWebpackPlugin
+                    .extract("style", "css?sourceMap!postcss!resolve-url!sass?sourceMap")
+            }]
+        },
         plugins: [
+            new ExtractTextWebpackPlugin("styles.css", { allChunks: true }),
             new OpenBrowserWebpackPlugin({
                 url: "http://localhost:8080/fintech-example"
             }),
@@ -107,9 +105,17 @@ const CONFIG_TARGET = {
             publicPath: "fintech-example",
             filename: "[name].[chunkhash].js"
         },
+        module: {
+            loaders: [{
+                test: /\.scss/,
+                loader: ExtractTextWebpackPlugin
+                    .extract("style", "css!postcss!resolve-url!sass?sourceMap")
+            }]
+        },
         plugins: [
+            new ExtractTextWebpackPlugin("styles.[hash].css", { allChunks: true }),
             new CompressionWebpackPlugin({
-                asset: "[path][file].gz[query]",
+                asset: "[path][file].gz[query]"
             }),
             new webpack.optimize.UglifyJsPlugin({
                 mangle: true
@@ -128,8 +134,9 @@ const CONFIG_TARGET = {
 };
 
 module.exports = function(env) {
-    return  _.mergeWith(CONFIG_DEFAULT, CONFIG_TARGET[env.TARGET || "DEV"], function (a, b) {
-        return _.isArray(a) ? _.concat(a, b) : undefined;
-    });
-    return config;
+    return _.mergeWith(CONFIG_DEFAULT, CONFIG_TARGET[env.TARGET || "DEV"], concatArrays);
 };
+
+function concatArrays(a, b) {
+    return _.isArray(a) ? _.concat(a, b) : undefined;
+}

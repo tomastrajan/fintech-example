@@ -7,8 +7,7 @@ import { DraggableDirective } from "../../shared/directives/draggable/draggable-
 @Component({
     selector: "ft-clients",
     template: require("./clients-component.html"),
-    directives: [COMMON_DIRECTIVES, DraggableDirective],
-    providers: [ClientService]
+    directives: [COMMON_DIRECTIVES, DraggableDirective]
 })
 export class ClientsComponent implements OnInit {
 

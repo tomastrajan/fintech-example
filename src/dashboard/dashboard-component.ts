@@ -2,6 +2,7 @@ import { Observable, Subscriber } from "rxjs";
 import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app";
+import { ClientsComponent } from "../clients";
 import {
     TickerFxComponent,
     CcyPair,
@@ -15,7 +16,7 @@ import {
 @Component({
     selector: "ft-dashboard",
     template: require("./dashboard-component.html"),
-    directives: [DraggableDirective, DroppableDirective, TickerFxComponent, CcyPairComponent]
+    directives: [DraggableDirective, DroppableDirective, TickerFxComponent, CcyPairComponent, ClientsComponent]
 })
 export class DashboardComponent {
 

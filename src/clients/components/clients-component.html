@@ -1,1 +1,33 @@
-<h1>Clients</h1>
+<div class="clients">
+    <div class="row">
+        <div class="col s12">
+            <ul>
+                <li class="client"
+                    *ngFor="let client of clientsDefault"
+                    [ngClass]="{popular: client.popular}">
+                    <div [ftDraggable]="{ type: 'client', data: client }">
+                        {{client.name}} {{client.surname}}
+                    </div>
+                    <i *ngIf="client.favourite" (click)="toggleFavourite(client)" class="material-icons">star</i>
+                    <i *ngIf="!client.favourite" (click)="toggleFavourite(client)" class="material-icons">star_border</i>
+                </li>
+            </ul>
+            <div class="search input-field">
+                <input id="query" type="text"[ngFormControl]="query" />
+                <label for="query">Search clients</label>
+            </div>
+            <ul>
+                <li class="client"
+                    *ngFor="let client of clientsSearchResults">
+                    <div [ftDraggable]="{ type: 'client', data: client }">
+                        {{client.name}} {{client.surname}}
+                    </div>
+                    <i *ngIf="client.favourite" (click)="toggleFavourite(client)" class="material-icons">star</i>
+                    <i *ngIf="!client.favourite" (click)="toggleFavourite(client)" class="material-icons">star_border</i>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,34 @@
+.clients {
+
+  .client {
+    position: relative;
+    cursor: pointer;
+
+    i {
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: $primary-color;
+      user-select: none;
+    }
+
+    div {
+      padding: 3px 0;
+    }
+
+    &.popular {
+      font-weight: bold;
+    }
+
+  }
+
+  .search {
+    position: relative;
+    margin-top: 30px;
+
+    label {
+      left: 0;
+    }
+  }
+
+}

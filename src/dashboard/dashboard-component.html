@@ -1,20 +1,25 @@
 <div class="dashboard">
     <div class="row">
-        <div class="col s12">
-            <ft-ccypair *ngFor="let ccypair of ccypairs | async"
-                        [ccypair]="ccypair"
-                        [ftDraggable]="{ type: 'ccypair', data: ccypair }">
-            </ft-ccypair>
+        <div class="col s9">
+            <div class="row">
+                <div class="col s12">
+                    <ft-ccypair *ngFor="let ccypair of ccypairs | async"
+                                [ccypair]="ccypair"
+                                [ftDraggable]="{ type: 'ccypair', data: ccypair }">
+                    </ft-ccypair>
+                </div>
+                <div class="col s12 tickers"
+                     [ftDroppable]="{ types: ['ccypair'], onDropped: onCcypairDropped }">
+                    <ft-ticker-fx class="left"
+                                  *ngFor="let ticker of tickers | async"
+                                  [fxUnderlying]="ticker"
+                                  (onRemoved)="onRemoved($event)">
+                    </ft-ticker-fx>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col s12 tickers"
-             [ftDroppable]="{ types: ['ccypair'], onDropped: onCcypairDropped }">
-            <ft-ticker-fx class="left"
-                          *ngFor="let ticker of tickers | async"
-                          [fxUnderlying]="ticker"
-                          (onRemoved)="onRemoved($event)">
-            </ft-ticker-fx>
+        <div class="col s3">
+            <ft-clients></ft-clients>
         </div>
     </div>
 </div>

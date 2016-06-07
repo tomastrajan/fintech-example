@@ -3,7 +3,7 @@
         <div class="col s12">
             <ul>
                 <li class="client"
-                    *ngFor="let client of clientsDefault"
+                    *ngFor="let client of clientService.clientsDefault | async"
                     [ngClass]="{popular: client.popular}">
                     <div [ftDraggable]="{ type: 'client', data: client }">
                         {{client.name}} {{client.surname}}
@@ -18,7 +18,7 @@
             </div>
             <ul>
                 <li class="client"
-                    *ngFor="let client of clientsSearchResults">
+                    *ngFor="let client of clientService.clientsSearchResults | async">
                     <div [ftDraggable]="{ type: 'client', data: client }">
                         {{client.name}} {{client.surname}}
                     </div>

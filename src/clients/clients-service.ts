@@ -1,16 +1,55 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+import { Observable, BehaviorSubject } from "rxjs";
 import { Client } from "./clients-interface";
 
 @Injectable()
 export class ClientService {
 
-    clientsModel: Client[];
+    private _clients = new BehaviorSubject<Client[]>(ClientService.generateMockData());
+    private _clientsDefault = new BehaviorSubject<Client[]>([]);
+    private _clientsSearchResults = new BehaviorSubject<Client[]>([]);
 
-    clientsDefault$: Subject<Client[]> = new Subject<Client[]>();
-    clientsSearchResults$: Subject<Client[]> = new Subject<Client[]>();
+    clientsDefault: Observable<Client[]> = this._clientsDefault.asObservable();
+    clientsSearchResults: Observable<Client[]> = this._clientsSearchResults.asObservable();
 
-    static generateMockData(): Client[] {
+    initDefaultClients(): void {
+        this._clientsDefault.next(this.getDefaultClients());
+    }
+
+    toggleFavourite(client: Client) {
+        const foundClient = this._clients.getValue().find(c => c.id === client.id);
+        foundClient.favourite = !foundClient.favourite;
+        this._clientsDefault.next(this.getDefaultClients());
+    }
+
+    searchClients(query: string): void {
+        const tokens = query.split(" ").filter(t => t).map(t => t.toLowerCase());
+        const results = this._clients
+            .getValue()
+            .filter(c => {
+                if (tokens[1]) {
+                    return c.name.toLowerCase().indexOf(tokens[0]) > -1 &&
+                        c.surname.toLowerCase().indexOf(tokens[1]) > -1;
+                } else {
+                    return c.name.toLowerCase().indexOf(tokens[0]) > -1;
+                }
+            })
+            .slice(0, 10);
+        this._clientsSearchResults.next(results);
+    }
+
+    private getDefaultClients(): Client[] {
+        return this._clients
+            .getValue()
+            .filter(c => c.popular || c.favourite)
+            .sort((a, b) => {
+                const byPopular = a.popular ? -1 : b.popular ? 1 : 0;
+                const byIndex = a.index && b.index ? a.index - b.index : a.index ? 1 : -1;
+                return byPopular === 0 ? byIndex : byPopular;
+            });
+    }
+
+    private static generateMockData(): Client[] {
         const names = [
             "John", "Mark", "Peter", "Julius", "Fabian", "Tomas", "Dani", "Dante",
             "Angelo", "Lukas", "Todd", "Mario", "Martin", "Viktor"
@@ -34,46 +73,6 @@ export class ClientService {
             }
         });
         return result;
-    }
-
-    constructor() {
-        this.clientsModel = ClientService.generateMockData();
-    }
-
-    initDefaultClients(): void {
-        this.clientsDefault$.next(this.getDefaultClients());
-    }
-
-    toggleFavourite(client: Client) {
-        const foundClient = this.clientsModel.find(c => c.id === client.id);
-        foundClient.favourite = !foundClient.favourite;
-        this.clientsDefault$.next(this.getDefaultClients());
-    }
-
-    searchClients(query: string): void {
-        const tokens = query.split(" ").filter(t => t).map(t => t.toLowerCase());
-        this.clientsSearchResults$.next(
-            this.clientsModel
-                .filter(c => {
-                    if (tokens[1]) {
-                        return c.name.toLowerCase().indexOf(tokens[0]) > -1 &&
-                            c.surname.toLowerCase().indexOf(tokens[1]) > -1;
-                    } else {
-                        return c.name.toLowerCase().indexOf(tokens[0]) > -1;
-                    }
-                })
-                .slice(0, 10)
-        );
-    }
-
-    private getDefaultClients(): Client[] {
-        return this.clientsModel
-            .filter(c => c.popular || c.favourite)
-            .sort((a, b) => {
-                const byPopular = a.popular ? -1 : b.popular ? 1 : 0;
-                const byIndex = a.index && b.index ? a.index - b.index : a.index ? 1 : -1;
-                return byPopular === 0 ? byIndex : byPopular;
-            });
     }
 
 }

@@ -2,14 +2,11 @@
     <div class="row">
         <div class="col s12">
             <ul>
-                <li class="client"
-                    *ngFor="let client of clientService.clientsDefault | async"
-                    [ngClass]="{popular: client.popular}">
-                    <div [ftDraggable]="{ type: 'client', data: client }">
-                        {{client.name}} {{client.surname}}
-                    </div>
-                    <i *ngIf="client.favourite" (click)="toggleFavourite(client)" class="material-icons">star</i>
-                    <i *ngIf="!client.favourite" (click)="toggleFavourite(client)" class="material-icons">star_border</i>
+                <li *ngFor="let client of clientService.clientsDefault | async">
+                    <ft-client [client]="client"
+                               (toggleFavourite)="onToggleFavourite($event)"
+                               [ftDraggable]="{ type: 'client', data: client }">
+                    </ft-client>
                 </li>
             </ul>
             <div class="search input-field">
@@ -17,13 +14,11 @@
                 <label for="query">Search clients</label>
             </div>
             <ul>
-                <li class="client"
-                    *ngFor="let client of clientService.clientsSearchResults | async">
-                    <div [ftDraggable]="{ type: 'client', data: client }">
-                        {{client.name}} {{client.surname}}
-                    </div>
-                    <i *ngIf="client.favourite" (click)="toggleFavourite(client)" class="material-icons">star</i>
-                    <i *ngIf="!client.favourite" (click)="toggleFavourite(client)" class="material-icons">star_border</i>
+                <li *ngFor="let client of clientService.clientsSearchResults | async">
+                    <ft-client [client]="client"
+                               (toggleFavourite)="onToggleFavourite($event)"
+                               [ftDraggable]="{ type: 'client', data: client }">
+                    </ft-client>
                 </li>
             </ul>
         </div>

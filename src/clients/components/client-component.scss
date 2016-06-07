@@ -1,0 +1,33 @@
+.client {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  padding: 5px;
+
+  span {
+    margin-left: 25px;
+  }
+
+  .icon-favourite {
+    position: absolute;
+    right: 0;
+    top: 2px;
+    color: $secondary-color-light;
+  }
+
+  .icon-user {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    opacity: 0.5;
+  }
+
+  &.popular {
+    font-weight: bold;
+
+    .icon-user {
+      opacity: 1;
+    }
+  }
+
+}

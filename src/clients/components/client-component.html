@@ -1,0 +1,7 @@
+<div class="client" [ngClass]="{popular: client.popular}">
+    <i class="icon-user material-icons">person</i>
+    <span>{{client.name}} {{client.surname}}</span>
+    <i class="icon-favourite material-icons" (click)="onFavouriteClick()">
+        star{{client.favourite ? "" : "_border"}}
+    </i>
+</div>

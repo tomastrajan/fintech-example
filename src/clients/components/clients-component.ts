@@ -3,11 +3,12 @@ import { COMMON_DIRECTIVES, Control } from "@angular/common";
 import { DraggableDirective } from "../../shared";
 import { ClientService } from "../clients-service";
 import { Client } from "../clients-interface";
+import { ClientComponent } from "./client-component";
 
 @Component({
     selector: "ft-clients",
     template: require("./clients-component.html"),
-    directives: [COMMON_DIRECTIVES, DraggableDirective]
+    directives: [COMMON_DIRECTIVES, ClientComponent, DraggableDirective]
 })
 export class ClientsComponent implements OnInit {
 
@@ -23,7 +24,7 @@ export class ClientsComponent implements OnInit {
             .subscribe(q => this.clientService.searchClients(q));
     }
 
-    toggleFavourite(client: Client) {
+    onToggleFavourite(client: Client) {
         this.clientService.toggleFavourite(client);
     }
 

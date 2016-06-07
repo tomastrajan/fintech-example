@@ -49,6 +49,7 @@ export class DraggableDirective implements OnInit {
         resetPosition = resetPosition === undefined ? true : resetPosition;
 
         this.dragStart
+            .flatMap(e => Observable.of(e).delay(150).takeUntil(this.dragEnd))
             .map((e: any) => {
                 e.preventDefault();
                 this.el.classList.add("dragged");
